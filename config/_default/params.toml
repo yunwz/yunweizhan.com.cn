@@ -3,8 +3,8 @@
 ## Homepage
 title = "Doks"
 titleSeparator = "-"
-titleAddition = "Modern Documentation Theme"
-description = "Doks is a Hugo theme for building secure, fast, and SEO-ready documentation websites, which you can easily update and customize."
+titleAddition = "简介"
+description = "这是一个专注于分享云原生、微服务领域技术文章的个人博客站点。"
 
 ## Documentation
 # docsVersion = "0.3"

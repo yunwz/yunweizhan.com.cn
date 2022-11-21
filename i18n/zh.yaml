@@ -2,10 +2,10 @@
   translation: "Get Started"
 
 - id: on-this-page
-  translation: "On this page"
+  translation: "在当前页面"
 
 - id: search-text
-  translation: "Search docs..."
+  translation: "搜索文档"
 
 - id: 404-title
   translation: "Page not found :("
@@ -14,4 +14,4 @@
   translation: "The page you are looking for doesn't exist or has been moved."
 
 - id: browse
-  translation: "Browse"
+  translation: "浏览器"

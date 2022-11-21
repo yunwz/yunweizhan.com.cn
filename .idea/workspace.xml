@@ -2,15 +2,292 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d716f211-bfd1-4e23-8787-79b18b0ace40" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/FUNDING.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/bug-report---.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/config.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/feature-request---.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/dependabot.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/pull_request_template.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/codeql-analysis.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/node.js-ci.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/stale.yml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.eslintignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.markdownlint-cli2.jsonc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.stylelintignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.stylelintrc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CODE_OF_CONDUCT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SECURITY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archetypes/blog.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archetypes/default.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archetypes/docs.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/archetypes/docs/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/fonts/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/default-image.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/alert-init.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/alert.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/bootstrap.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/clipboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/darkmode-init.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/darkmode.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/highlight.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/instant.page.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/katex.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/lazysizes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/mermaid.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/scroll-lock.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/to-top.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/js/vendor/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/app.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/common/_dark.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/common/_fonts.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/common/_global.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/common/_variables.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_alerts.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_buttons.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_code.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_comments.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_details.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_forms.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_images.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_mermaid.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_search.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_syntax.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/components/_tables.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/layouts/_footer.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/layouts/_header.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/layouts/_pages.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/layouts/_posts.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/layouts/_sidebar.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/scss/vendor/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/babel.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/_default/config.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/_default/languages.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/_default/markup.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/_default/menus/menus.en.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/_default/menus/menus.nl.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/_default/menus/menus.zh.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/_default/params.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/next/config.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/postcss.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/production/config.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/blog/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/blog/say-hello-to-doks/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/contact/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/contributors/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/contributors/henk-verlinde/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/help/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/help/faq.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/help/how-to-update.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/help/troubleshooting.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/lorem/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/lorem/ipsum/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/lorem/ipsum/amet/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/lorem/ipsum/amet/consectetur/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/lorem/ipsum/dolor/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/lorem/ipsum/sit/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/prologue/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/prologue/commands.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/prologue/introduction.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/docs/prologue/quick-start.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/privacy-policy/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/en/versions.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/contact/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/contributors/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/contributors/henk-verlinde/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/docs/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/docs/help/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/docs/help/faq.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/docs/help/how-to-update.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/docs/help/troubleshooting.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/docs/prologue/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/docs/prologue/commands.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/docs/prologue/introduction.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/docs/prologue/quick-start.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/nl/privacy-policy/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/blog/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/blog/say-hello-to-doks/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/contact/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/contributors/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/contributors/henk-verlinde/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/help/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/help/faq.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/help/how-to-update.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/help/troubleshooting.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/lorem/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/lorem/ipsum/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/lorem/ipsum/amet/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/lorem/ipsum/amet/consectetur/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/lorem/ipsum/dolor/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/lorem/ipsum/sit/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/prologue/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/prologue/commands.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/prologue/introduction.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/prologue/quick-start.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/spring/_index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/spring/quick-start.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/privacy-policy/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/versions.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/docs-versions.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/hi-from-lambda.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/i18n/de.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/i18n/en.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/i18n/nl.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/i18n/zh.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/doks.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/screenshot.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/tn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/404.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/_default/_markup/render-heading.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/_default/baseof.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/_default/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/_default/index.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/_default/list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/_default/section.sitemap.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/_default/single.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/_default/terms.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/_default/versions.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/blog/single.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/docs/list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/docs/single.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/index.headers" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/index.redirects" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/content/card-image.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/content/figure.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/content/image.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/footer/footer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/footer/script-footer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/head/custom-head.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/head/favicons.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/head/head.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/head/opengraph.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/head/resource-hints.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/head/script-header.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/head/seo.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/head/structured-data.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/head/stylesheet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/head/twitter_cards.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/header/alert.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/header/header.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/main/blog-meta.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/main/breadcrumb.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/main/date.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/main/docs-navigation.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/main/edit-page.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/main/last-modified.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/sidebar/auto-collapsible-menu.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/sidebar/auto-default-menu.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/sidebar/docs-menu.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/sidebar/docs-toc.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/sidebar/manual-collapsible-menu.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/partials/sidebar/manual-default-menu.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/robots.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/rss.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/shortcodes/alert.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/shortcodes/details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/shortcodes/email.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/shortcodes/mermaid.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/shortcodes/video.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/sitemap.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/netlify.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-loc.jsonk" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/android-chrome-192x192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/android-chrome-512x512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/apple-touch-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/css/vendor/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/doks.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/doks.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/favicon-16x16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/favicon-32x32.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/favicon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_AMS-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_AMS-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_AMS-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Caligraphic-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Caligraphic-Bold.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Caligraphic-Bold.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Caligraphic-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Caligraphic-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Caligraphic-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Fraktur-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Fraktur-Bold.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Fraktur-Bold.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Fraktur-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Fraktur-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Fraktur-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-Bold.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-Bold.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-BoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-BoldItalic.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-BoldItalic.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-Italic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-Italic.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-Italic.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Main-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Math-BoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Math-BoldItalic.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Math-BoldItalic.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Math-Italic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Math-Italic.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Math-Italic.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_SansSerif-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_SansSerif-Bold.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_SansSerif-Bold.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_SansSerif-Italic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_SansSerif-Italic.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_SansSerif-Italic.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_SansSerif-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_SansSerif-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_SansSerif-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Script-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Script-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Script-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size1-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size1-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size1-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size2-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size2-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size2-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size3-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size3-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size3-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size4-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size4-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Size4-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Typewriter-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Typewriter-Regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/KaTeX_Typewriter-Regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-500.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-500.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-500italic.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-500italic.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-700.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-700.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-700italic.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-700italic.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-italic.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-italic.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/fonts/vendor/jost/jost-v4-latin-regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/images/vendor/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/vendor/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/logo-doks.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/logo-doks.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/site.webmanifest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/videos/flower.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/videos/flower.webm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/theme.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,8 +300,13 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
+  </component>
   <component name="ProjectId" id="2HokIz7HbFmyU6tYKrDxN7DAdhE" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -32,19 +314,49 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/yuntiankong/code/web/yunweizhan.com.cn",
+    "last_opened_file_path": "/Users/yuntiankong/code/web/yunweizhan.com.cn/content/zh/docs/spring",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.stylelint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.stylelint": "",
+    "node.js.selected.package.stylelint": "/Users/yuntiankong/code/web/yunweizhan.com.cn/node_modules/stylelint",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "yiiguxing.plugin.translate",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/content/zh/docs/spring" />
+      <recent name="$PROJECT_DIR$/config/_default/menus" />
+      <recent name="$PROJECT_DIR$/content" />
+      <recent name="$PROJECT_DIR$/i18n" />
+      <recent name="$PROJECT_DIR$/node_modules/.bin/hugo" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/content/zh/docs" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="server" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="server" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.server" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
@@ -53,7 +365,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668958747282</updated>
-      <workItem from="1668958748394" duration="2011000" />
+      <workItem from="1668958748394" duration="4076000" />
+      <workItem from="1668997762167" duration="17589000" />
     </task>
     <servers />
   </component>

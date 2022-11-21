@@ -8,7 +8,7 @@ draft: true
 images: []
 menu:
   docs:
-    parent: " {{ .File.Path | path.Dir }}"
+    parent: "{{ .File.Dir | path.Base }}"
     identifier: "{{ .Name }}-{{ delimit (shuffle (split (md5 .Name) "" )) "" }}"
 weight: 999
 toc: true

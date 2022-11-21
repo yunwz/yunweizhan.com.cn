@@ -1,3 +1,12 @@
+[zh]
+  languageName = "中文"
+  contentDir = "content/zh"
+  weight= 1
+  title= "云微站"
+  [zh.params]
+     languageISO = "ZH"
+     languageTag = "zh-CN"
+
 [en]
   languageName = "English"
   contentDir = "content/en"

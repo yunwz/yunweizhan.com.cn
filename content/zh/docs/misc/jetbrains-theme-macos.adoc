@@ -1,0 +1,21 @@
+---
+title: "Jetbrains Theme Macos"
+description: ""
+lead: ""
+date: 2022-12-19T12:38:23+08:00
+lastmod: 2022-12-19T12:38:23+08:00
+draft: true
+images: []
+menu:
+  docs:
+    parent: "misc"
+    identifier: "jetbrains-theme-macos-39b7f95d5599e5e65e5bf62810ad48f8"
+weight: 999
+toc: true
+---
+
+== 主题不能自动切换的问题
+
+在终端中执行以下命令`defaults read -g AppleInterfaceStyle`, 如果Macos当前主题是浅色，但
+该命令返回的是 *Dark*，则在系统设置 -> 外观 中重新设置一下即可。比如：自动 改为 浅色 再改回 自动
+ 模式即可。

@@ -1,0 +1,33 @@
+---
+title: "升级至SpringBoot3的改造"
+date: 2022-11-27T10:57:40+08:00
+draft: true
+---
+
+== Spring Boot 3.0 Release Note
+
+https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Release-Notes
+
+=== dependencies
+
+https://docs.spring.io/spring-boot/docs/3.0.0-SNAPSHOT/reference/html/dependency-versions.html#appendix.dependency-versions
+
+== Spring Security 6。0
+
+https://docs.spring.io/spring-security/reference/whats-new.html
+
+> gh-11923 - Remove WebSecurityConfigurerAdapter. Instead, create a SecurityFilterChain bean.
+
+移除了 `WebSecurityConfigurerAdapter`, 需要参考 link:[这片文章](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter)
+修改。
+
+== nacos-api
+
+需要引入protobuf/protoc插件，重新生成gRPC服务端存根（存在jakarta以来问题）
+
+== 反射--NoSuchField问题
+
+1. 本地debug时添加虚拟机参数；
+2. pom文件配置 `maven-surefire-plugin` 配置：
+    ```xml
+    

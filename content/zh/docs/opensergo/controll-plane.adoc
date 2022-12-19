@@ -1,0 +1,167 @@
+---
+title: "Controll Plane"
+description: "OpenSergo 控制面逻辑分析"
+lead: ""
+date: 2022-12-15T15:56:42+08:00
+lastmod: 2022-12-15T15:56:42+08:00
+draft: true
+images: []
+menu:
+  docs:
+    parent: "opensergo"
+    identifier: "controll-plane-a234d8ffdf1b7e9b57d6fb29510488bf"
+weight: 999
+toc: true
+---
+
+== 模型
+
+image:images/struct.svg[领域模型]
+
+== 逻辑分析
+
+.pkg/main/main.go
+[source,go]
+----
+func main() {
+	cp, err := opensergo.NewControlPlane()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = cp.Start()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+----
+
+.controll_plane.go
+[source,go]
+----
+func NewControlPlane() (*ControlPlane, error) {
+	cp := &ControlPlane{}
+
+	operator, err := controller.NewKubernetesOperator(cp.sendMessage)
+	if err != nil {
+		return nil, err
+	}
+
+	cp.server = transport.NewServer(uint32(10246), []model.SubscribeRequestHandler{cp.handleSubscribeRequest})
+	cp.operator = operator
+
+	hostname, herr := os.Hostname()
+	if herr != nil {
+		// TODO: log here
+		hostname = "unknown-host"
+	}
+	cp.protoDesc = &trpb.ControlPlaneDesc{Identifier: "osg-" + hostname}
+
+	return cp, nil
+}
+----
+
+从上面代码可以知道，控制面主要包含operator和server。前者用于与k8s交互，后者则用于下发配置给数据面。
+
+=== ControllPlane的Start方法
+
+[source,go]
+----
+func (c *ControlPlane) Start() error {
+	// Run the Kubernetes operator
+	err := c.operator.Run()
+	if err != nil {
+		return err
+	}
+	// Run the transport server
+	err = c.server.Run()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+----
+
+Start方法主要调用了operator和server的Run方法，加下来分别分析。
+
+==== KubernetesOperator及其Run方法
+
+.KubernetesOperator定义
+[source,go]
+----
+type KubernetesOperator struct {
+	crdManager  ctrl.Manager
+	controllers map[string]*CRDWatcher
+	ctx         context.Context
+	ctxCancel   context.CancelFunc
+	started     atomic.Value
+
+	sendDataHandler model.DataEntirePushHandler
+
+	controllerMux sync.RWMutex
+}
+----
+
+.Run方法
+[source,go]
+----
+func (k *KubernetesOperator) Run() error {
+
+	// +kubebuilder:scaffold:builder
+	go util.RunWithRecover(func() {
+		setupLog.Info("Starting OpenSergo operator")
+		if err := k.crdManager.Start(k.ctx); err != nil {
+			setupLog.Error(err, "problem running OpenSergo operator")
+		}
+		setupLog.Info("OpenSergo operator will be closed")
+	})
+	return nil
+}
+----
+
+可以看到operator的主要逻辑就是调用crdManager的Start方法。这里的crdManager实际类型是 `sigs.k8s.io/controller-runtime/pkg/manager/internal.go#controllerManager`
+
+==== Server及Run方法
+
+[source,go]
+----
+type Server struct {
+	transportServer *TransportServer
+	grpcServer      *grpc.Server
+
+	connectionManager *ConnectionManager
+
+	port    uint32
+	started *atomic.Bool
+}
+
+func (s *Server) Run() error {
+	if s.started.CAS(false, true) {
+		listener, err := net.Listen("tcp", fmt.Sprintf(":%d", s.port))
+		if err != nil {
+			return err
+		}
+
+		trpb.RegisterOpenSergoUniversalTransportServiceServer(s.grpcServer, s.transportServer)
+		err = s.grpcServer.Serve(listener)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+----
+
+逻辑：
+
+. 将started状态设置为 `true`;
+. 创建TcpListener，监听端口*10246*;
+. 将transportServer注册到GrpcServer;
+. 在tcplistener上启动grpcServer;
+
+=== `KubernetesOperator` 逻辑
+
+==== CRDWatcher
+
+`CRDWatcher` 实现了k8s的controller，在 `KubernetesOperator` 中，每个`CRDWatcher` 负责
+监控一种资源

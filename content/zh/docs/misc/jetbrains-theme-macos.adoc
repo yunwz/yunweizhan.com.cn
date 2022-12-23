@@ -19,3 +19,5 @@ toc: true
 在终端中执行以下命令`defaults read -g AppleInterfaceStyle`, 如果Macos当前主题是浅色，但
 该命令返回的是 *Dark*，则在系统设置 -> 外观 中重新设置一下即可。比如：自动 改为 浅色 再改回 自动
  模式即可。
+
+参考文章：https://youtrack.jetbrains.com/issue/IDEA-252482/Appearance-sync-with-OS-does-not-work

@@ -1,0 +1,25 @@
+---
+title: "Install K8s With Kubeadm"
+description: ""
+lead: ""
+date: 2023-01-08T22:26:02+08:00
+lastmod: 2023-01-08T22:26:02+08:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "misc"
+    identifier: "install-k8s-with-kubeadm-a37b186b5b31d666bf24f16ad7c7b034"
+weight: 999
+toc: true
+---
+
+## kube-apiserver 启动失败
+
+找不到pause镜像
+
+执行命令：
+[source,shell]
+----
+ctr -n=k8s.io images tag registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.6 registry.k8s.io/pause:3.6
+----

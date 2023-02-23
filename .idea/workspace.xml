@@ -5,14 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d716f211-bfd1-4e23-8787-79b18b0ace40" name="变更" comment="update">
-      <change afterPath="$PROJECT_DIR$/content/zh/docs/misc/_index.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/content/zh/docs/misc/jetbrains-theme-macos.adoc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/content/zh/docs/nacos/_index.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/content/zh/docs/nacos/upgradespringboot3.adoc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/content/zh/docs/opensergo/_index.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/content/zh/docs/opensergo/controll-plane.adoc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/content/zh/docs/opensergo/images/struct.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/misc/install-k8s-with-kubeadm.adoc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/opensergo/controll-plane2.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/opensergo/images/2.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content/zh/docs/opensergo/images/2.svg.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codestream.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codestream.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/content/zh/docs/misc/jetbrains-theme-macos.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/content/zh/docs/misc/jetbrains-theme-macos.adoc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/content/zh/docs/nacos/upgradespringboot3.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/content/zh/docs/nacos/upgradespringboot3.adoc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/content/zh/docs/opensergo/controll-plane.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/content/zh/docs/opensergo/controll-plane.adoc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +29,12 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
+  </component>
+  <component name="KubernetesApiPersistence">
+    <option name="context" value="kubernetes-admin@kubernetes" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -50,7 +57,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/yuntiankong/code/web/yunweizhan.com.cn/archetypes&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/yuntiankong/code/web/yunweizhan.com.cn/content/zh/docs/opensergo/images&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -58,17 +65,17 @@
     &quot;node.js.selected.package.stylelint&quot;: &quot;/Users/yuntiankong/code/web/yunweizhan.com.cn/node_modules/stylelint&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/content/zh/docs/opensergo/images" />
+      <recent name="$PROJECT_DIR$/content/zh/docs/opensergo" />
       <recent name="$PROJECT_DIR$/archetypes" />
       <recent name="$PROJECT_DIR$/content/zh/docs/spring" />
       <recent name="$PROJECT_DIR$/config/_default/menus" />
-      <recent name="$PROJECT_DIR$/content" />
-      <recent name="$PROJECT_DIR$/i18n" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/content/zh/docs/nacos" />
@@ -122,7 +129,81 @@
       <workItem from="1671270088698" duration="1186000" />
       <workItem from="1671277448999" duration="577000" />
       <workItem from="1671333321153" duration="110000" />
-      <workItem from="1671422975364" duration="862000" />
+      <workItem from="1671422975364" duration="2240000" />
+      <workItem from="1671433857091" duration="5266000" />
+      <workItem from="1671453389364" duration="582000" />
+      <workItem from="1671521250074" duration="5823000" />
+      <workItem from="1671590980105" duration="521000" />
+      <workItem from="1671605083651" duration="553000" />
+      <workItem from="1671623243281" duration="554000" />
+      <workItem from="1671675077659" duration="1016000" />
+      <workItem from="1671690141979" duration="5646000" />
+      <workItem from="1671700992684" duration="553000" />
+      <workItem from="1671708390319" duration="565000" />
+      <workItem from="1671716624889" duration="1615000" />
+      <workItem from="1671760112071" duration="2010000" />
+      <workItem from="1671780388317" duration="1943000" />
+      <workItem from="1671848657786" duration="797000" />
+      <workItem from="1671851481862" duration="2828000" />
+      <workItem from="1671864540717" duration="1150000" />
+      <workItem from="1671872072353" duration="2593000" />
+      <workItem from="1671936497812" duration="1669000" />
+      <workItem from="1671968370263" duration="522000" />
+      <workItem from="1672014942349" duration="1067000" />
+      <workItem from="1672027148269" duration="538000" />
+      <workItem from="1672036603505" duration="560000" />
+      <workItem from="1672057633253" duration="551000" />
+      <workItem from="1672132029919" duration="2644000" />
+      <workItem from="1672142283807" duration="582000" />
+      <workItem from="1672190188501" duration="557000" />
+      <workItem from="1672209417602" duration="580000" />
+      <workItem from="1672214120069" duration="562000" />
+      <workItem from="1672229736129" duration="565000" />
+      <workItem from="1672278703133" duration="553000" />
+      <workItem from="1672305534254" duration="426000" />
+      <workItem from="1672383418548" duration="553000" />
+      <workItem from="1672473914576" duration="544000" />
+      <workItem from="1672543377192" duration="524000" />
+      <workItem from="1672571254045" duration="539000" />
+      <workItem from="1672580546053" duration="500000" />
+      <workItem from="1672625717704" duration="504000" />
+      <workItem from="1672632917158" duration="533000" />
+      <workItem from="1672654817524" duration="555000" />
+      <workItem from="1672659471098" duration="510000" />
+      <workItem from="1672935747039" duration="693000" />
+      <workItem from="1672995299922" duration="4000" />
+      <workItem from="1673187896593" duration="906000" />
+      <workItem from="1674705113742" duration="1209000" />
+      <workItem from="1674735432834" duration="550000" />
+      <workItem from="1674804481079" duration="1151000" />
+      <workItem from="1674827911244" duration="576000" />
+      <workItem from="1674876076312" duration="19000" />
+      <workItem from="1675305851657" duration="679000" />
+      <workItem from="1675321298903" duration="585000" />
+      <workItem from="1675330268185" duration="598000" />
+      <workItem from="1675389939337" duration="533000" />
+      <workItem from="1675407017230" duration="579000" />
+      <workItem from="1675429105764" duration="566000" />
+      <workItem from="1675478544415" duration="567000" />
+      <workItem from="1675564153300" duration="286000" />
+      <workItem from="1675587651766" duration="632000" />
+      <workItem from="1675645766880" duration="969000" />
+      <workItem from="1675663626775" duration="594000" />
+      <workItem from="1675697196729" duration="590000" />
+      <workItem from="1675822940799" duration="599000" />
+      <workItem from="1675838065560" duration="591000" />
+      <workItem from="1675845868209" duration="598000" />
+      <workItem from="1675856491675" duration="618000" />
+      <workItem from="1675907436411" duration="1129000" />
+      <workItem from="1675923935577" duration="579000" />
+      <workItem from="1675937102596" duration="1178000" />
+      <workItem from="1675997469071" duration="605000" />
+      <workItem from="1676010980588" duration="608000" />
+      <workItem from="1676019885165" duration="1138000" />
+      <workItem from="1676083942588" duration="1126000" />
+      <workItem from="1676426322290" duration="1219000" />
+      <workItem from="1677137257628" duration="13000" />
+      <workItem from="1677137279780" duration="626000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <created>1669036606501</created>
@@ -131,7 +212,21 @@
       <option name="project" value="LOCAL" />
       <updated>1669036606501</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update">
+      <created>1671424995553</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1671424995553</updated>
+    </task>
+    <task id="LOCAL-00003" summary="update">
+      <created>1671761953932</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1671761953932</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

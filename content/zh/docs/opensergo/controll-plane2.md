@@ -1,19 +1,3 @@
----
-title: "Controll Plane"
-description: "OpenSergo 控制面逻辑分析"
-lead: ""
-date: 2022-12-15T15:56:42+08:00
-lastmod: 2022-12-15T15:56:42+08:00
-draft: false
-images: []
-menu:
-  docs:
-    parent: "opensergo"
-    identifier: "controll-plane-a234d8ffdf1b7e9b57d6fb29510488bf"
-weight: 999
-toc: true
----
-
 == 模型
 
 image:images/struct.svg[领域模型]
@@ -21,8 +5,7 @@ image:images/struct.svg[领域模型]
 == 逻辑分析
 
 .pkg/main/main.go
-[source,go]
-----
+```go
 func main() {
 	cp, err := opensergo.NewControlPlane()
 	if err != nil {
@@ -33,11 +16,10 @@ func main() {
 		log.Fatal(err)
 	}
 }
-----
+```
 
 .controll_plane.go
-[source,go]
-----
+```go
 func NewControlPlane() (*ControlPlane, error) {
 	cp := &ControlPlane{}
 
@@ -58,14 +40,13 @@ func NewControlPlane() (*ControlPlane, error) {
 
 	return cp, nil
 }
-----
+```
 
 从上面代码可以知道，控制面主要包含operator和server。前者用于与k8s交互，后者则用于下发配置给数据面。
 
 === ControllPlane的Start方法
 
-[source,go]
-----
+```go
 func (c *ControlPlane) Start() error {
 	// Run the Kubernetes operator
 	err := c.operator.Run()
@@ -80,15 +61,14 @@ func (c *ControlPlane) Start() error {
 
 	return nil
 }
-----
+```
 
 Start方法主要调用了operator和server的Run方法，接下来分别分析。
 
 === KubernetesOperator及其Run方法
 
 .KubernetesOperator定义
-[source,go]
-----
+```go
 type KubernetesOperator struct {
 	crdManager  ctrl.Manager
 	controllers map[string]*CRDWatcher
@@ -100,11 +80,10 @@ type KubernetesOperator struct {
 
 	controllerMux sync.RWMutex
 }
-----
+```
 
 .Run方法
-[source,go]
-----
+```go
 func (k *KubernetesOperator) Run() error {
 
 	// +kubebuilder:scaffold:builder
@@ -117,14 +96,13 @@ func (k *KubernetesOperator) Run() error {
 	})
 	return nil
 }
-----
+```
 
 可以看到operator的主要逻辑就是调用crdManager的Start方法。这里的crdManager实际类型是 `sigs.k8s.io/controller-runtime/pkg/manager/internal.go#controllerManager`
 
 === Server及Run方法
 
-[source,go]
-----
+```go
 type Server struct {
 	transportServer *TransportServer
 	grpcServer      *grpc.Server
@@ -150,7 +128,7 @@ func (s *Server) Run() error {
 	}
 	return nil
 }
-----
+```
 
 逻辑：
 
@@ -168,8 +146,7 @@ func (s *Server) Run() error {
 PS：目前没看到该方法在哪里使用。
 
 .AddWatcher 定义
-[source,go]
-----
+```go
 func (k *KubernetesOperator) AddWatcher(target model.SubscribeTarget) error {
 	k.controllerMux.Lock()
 	defer k.controllerMux.Unlock()
@@ -215,7 +192,7 @@ func (k *KubernetesOperator) AddWatcher(target model.SubscribeTarget) error {
 	setupLog.Info("OpenSergo CRD watcher has been added successfully")
 	return nil
 }
-----
+```
 
 === CRDWatcher
 
@@ -223,8 +200,7 @@ func (k *KubernetesOperator) AddWatcher(target model.SubscribeTarget) error {
 
 其定义如下:
 .CRDWatcher struct
-[source,go]
-----
+```go
 type CRDWatcher struct {
 	kind model.SubscribeKind
 
@@ -245,7 +221,7 @@ type CRDWatcher struct {
 
 	updateMux sync.RWMutex
 }
-----
+```
 
 `client.Client`: k8s `controller-runtime` 中的接口，用于和kube-apiserver交互；
 `crdCache`: 用于缓存数据；
@@ -257,8 +233,7 @@ type CRDWatcher struct {
 CRDWatcher 是 k8s的controller实现，因此当接收到CRD时，会调用该方法进行处理。接下来我们看看该方法的逻辑：
 
 .Reconcile 方法
-[source,go]
-----
+```go
 func (r *CRDWatcher) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
   // 如果当前CRD 资源所属的命名空间没有订阅（同时也说明该app没有被订阅），则不做任何处理直接返回
 	if !r.HasAnySubscribedOfNamespace(req.Namespace) {
@@ -352,15 +327,14 @@ func (r *CRDWatcher) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Resu
 	}
 	return ctrl.Result{}, nil
 }
-----
+```
 
 以上就是opensergo控制面接收到k8s CRD时的处理逻辑了。
 
 === ControlPlane的sendMessage/sendMessageToStream方法
 
 .ControlPlane#sendMessage方法
-[source,go]
-----
+```go
 func (c *ControlPlane) sendMessage(namespace, app, kind string, dataWithVersion *trpb.DataWithVersion, status *trpb.Status, respId string) error {
   //获取所有订阅该类型应用的所有连接
 	connections, exists := c.server.ConnectionManager().Get(namespace, app, kind)
@@ -400,7 +374,7 @@ func (c *ControlPlane) sendMessageToStream(stream model.OpenSergoTransportStream
 		ResponseId:      respId,
 	})
 }
-----
+```
 
 以上便是下发数据给数据面的逻辑了，整体还是很清晰的。
 
@@ -411,8 +385,7 @@ func (c *ControlPlane) sendMessageToStream(stream model.OpenSergoTransportStream
 ==== TransportServer结构体及其SubscribeConfig方法
 
 .TransportServer结构体
-[source,go]
-----
+```go
 type TransportServer struct {
 	trpb.OpenSergoUniversalTransportServiceServer
 
@@ -420,22 +393,21 @@ type TransportServer struct {
 
 	subscribeHandlers []model.SubscribeRequestHandler
 }
-----
+```
 
  从上面的定义可知TransportServer组合了OpenSergoUniversalTransportServiceServer，并实现其 `SubscribeConfig` 方法。
 
 `OpenSergoUniversalTransportServiceServer` 是grpc的service定义, 如下：
 
 [source, protobuf]
-----
+```
 service OpenSergoUniversalTransportService {
   rpc SubscribeConfig(stream SubscribeRequest) returns (stream SubscribeResponse);
 }
-----
+```
 
 .SubscribeConfig方法
-[source,go]
-----
+```go
 func (s *TransportServer) SubscribeConfig(stream trpb.OpenSergoUniversalTransportService_SubscribeConfigServer) error {
 	var clientIdentifier model.ClientIdentifier
   //注意这里是死循环
@@ -505,14 +477,13 @@ func (s *TransportServer) SubscribeConfig(stream trpb.OpenSergoUniversalTranspor
 
 	}
 }
-----
+```
 
 ==== ControlPlane的handleSubscribeRequest方法
 
 该放用用于将客户端连接及其订阅类型加入到对应的CRDWather中。
 
-[source,go]
-----
+```go
 func (c *ControlPlane) handleSubscribeRequest(clientIdentifier model.ClientIdentifier, request *trpb.SubscribeRequest, stream model.OpenSergoTransportStream) error {
   //根据订阅的类型将其加入到对应的CRDWatcher中
 	for _, kind := range request.Target.Kinds {
@@ -559,4 +530,4 @@ func (c *ControlPlane) handleSubscribeRequest(clientIdentifier model.ClientIdent
 	}
 	return nil
 }
-----
+```

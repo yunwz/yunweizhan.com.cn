@@ -12,7 +12,19 @@ https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Release-Note
 
 https://docs.spring.io/spring-boot/docs/3.0.0-SNAPSHOT/reference/html/dependency-versions.html#appendix.dependency-versions
 
-== Spring Security 6。0
+=== Configuration Properties Migration
+
+引入迁移依赖，自动检测需要迁移的配置
+[source,xml]
+----
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-properties-migrator</artifactId>
+	<scope>runtime</scope>
+</dependency>
+----
+
+== Spring Security 6.0
 
 https://docs.spring.io/spring-security/reference/whats-new.html
 
@@ -21,13 +33,45 @@ https://docs.spring.io/spring-security/reference/whats-new.html
 移除了 `WebSecurityConfigurerAdapter`, 需要参考 link:[这片文章](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter)
 修改。
 
+=== 5.8
+
+为升级到6.0做准备： https://docs.spring.io/spring-security/reference/5.8/migration/servlet/authentication.html
+
+=== 6.0
+
+升级到6.0: https://docs.spring.io/spring-security/reference/migration/servlet/authentication.html
+
 == nacos-api
 
-需要引入protobuf/protoc插件，重新生成gRPC服务端存根（存在jakarta以来问题）
+需要引入protobuf/protoc插件，重新生成gRPC服务端存根（存在jakarta依赖问题）
 
 == 反射--NoSuchField问题
 
-1. 本地debug时添加虚拟机参数；
-2. pom文件配置 `maven-surefire-plugin` 配置：
-    ```xml
-    
+. 本地debug时添加虚拟机参数；
+. pom文件配置 `maven-surefire-plugin` 配置：
+[source,xml]
+----
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <argLine>
+                        --add-opens java.base/java.util=ALL-UNNAMED
+                        --add-opens java.base/java.lang=ALL-UNNAMED
+                        --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+                    </argLine>
+                </configuration>
+            </plugin>
+----
+
+. aaaa
+
+
+==  依赖升级
+
+. logback 1.4.5
+. log4j 2.19.0
+. servlet 6.0
+. Jackson 2.14.1
+. slf4j-api
+. spring-security-config 6.0.1

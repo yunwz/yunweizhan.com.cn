@@ -21,3 +21,6 @@ toc: true
  模式即可。
 
 参考文章：https://youtrack.jetbrains.com/issue/IDEA-252482/Appearance-sync-with-OS-does-not-work
+
+*AppleInterfaceStyleSwitchesAutomatically*
+https://developer.apple.com/forums/thread/118974

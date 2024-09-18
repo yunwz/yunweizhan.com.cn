@@ -1,5 +1,5 @@
 ---
-title: "Annotation Analysis"
+title: "基于`dubbo-samples-annotation`项目的Dubbo注解逻辑分析"
 description: ""
 lead: ""
 date: 2023-02-23T20:29:42+08:00
@@ -13,3 +13,648 @@ menu:
 weight: 999
 toc: true
 ---
+
+== 程序入口
+
+[source,java]
+----
+public class AnnotationProviderBootstrap {
+
+    public static void main(String[] args) throws Exception {
+        new EmbeddedZooKeeper(2181, false).start();
+
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ProviderConfiguration.class);
+        context.start();
+
+        System.out.println("dubbo service started.");
+        new CountDownLatch(1).await();
+    }
+
+}
+----
+
+说明：main方法中创建了一个内置的Zookeeper注册中心；接着创建`AnnotationConfigApplicationContext`（应用上下文，此处作为容器）并启动。 接下来我们就分析该类的创建过程。
+
+== 容器（Spring应用上下文）创建及Bean加载过程
+
+[source,java]
+----
+public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
+	public AnnotationConfigApplicationContext(Class<?>... annotatedClasses) {
+		this();
+		register(annotatedClasses);
+		refresh();
+	}
+	public AnnotationConfigApplicationContext() {
+		this.reader = new AnnotatedBeanDefinitionReader(this);
+		this.scanner = new ClassPathBeanDefinitionScanner(this);
+	}
+	public void register(Class<?>... annotatedClasses) {
+		Assert.notEmpty(annotatedClasses, "At least one annotated class must be specified");
+		this.reader.register(annotatedClasses);
+	}
+}
+----
+
+. 调用无参构造方法--创建`AnnotatedBeanDefinitionReader`和`ClassPathBeanDefinitionScanner`;
+. 调用register方法将`ProviderConfiguration`类加入reader中;
+. 调用refresh方法刷新上下文；
+
+Note: 创建 `AnnotatedBeanDefinitionReader` 实例时， 该类的构造方法会往上下文中添加一个类型为 `ConfigurationClassPostProcessor` 的 `BeanFactoryPostProcessor`，其作用下文讲解。
+
+== Bean`ProviderConfiguration`的注册过程
+
+上面`this.reader.register(annotatedClasses)`会解析ProviderConfiguration类的注解，并将其作为bean添加到Spring容器中。因此接下来先看一下`ProviderConfiguration`类携带的注解信息：
+
+[source,java]
+----
+@Configuration
+@EnableDubbo(scanBasePackages = "org.apache.dubbo.samples.annotation.impl")
+@PropertySource("classpath:/spring/dubbo-provider.properties")
+public class ProviderConfiguration {
+    @Bean
+    public ProviderConfig providerConfig() {
+        ProviderConfig providerConfig = new ProviderConfig();
+        providerConfig.setTimeout(1000);
+        return providerConfig;
+    }
+}
+
+@EnableDubboConfig
+@DubboComponentScan
+public @interface EnableDubbo {
+    @AliasFor(
+        annotation = DubboComponentScan.class,
+        attribute = "basePackages"
+    )
+    String[] scanBasePackages() default {};
+
+    @AliasFor(
+        annotation = DubboComponentScan.class,
+        attribute = "basePackageClasses"
+    )
+    Class<?>[] scanBasePackageClasses() default {};
+
+    @AliasFor(
+        annotation = EnableDubboConfig.class,
+        attribute = "multiple"
+    )
+    boolean multipleConfig() default true;
+}
+
+@Import(DubboConfigConfigurationRegistrar.class)
+public @interface EnableDubboConfig {
+
+    boolean multiple() default true;
+
+}
+@Import(DubboComponentScanRegistrar.class)
+public @interface DubboComponentScan {
+
+    String[] value() default {};
+
+    String[] basePackages() default {};
+
+    Class<?>[] basePackageClasses() default {};
+
+}
+----
+
+该配置类使用 `@EnableDubbo` 注解，并配置了**scanBasePackages**属性值为**org.apache.dubbo.samples.annotation.impl**。而`@EnableDubbo`注解又引用了 `EnableDubboConfig` 和 `@DubboComponentScan` 注解， 这两个注解通过 `@Import`分别引入了 `DubboConfigConfigurationRegistrar` 和 `DubboComponentScanRegistrar`类（具体作用下文分析）。
+
+现在回到bean注册的地方：
+
+[source,java]
+----
+public class AnnotatedBeanDefinitionReader {
+	public void register(Class<?>... annotatedClasses) {
+		for (Class<?> annotatedClass : annotatedClasses) {
+			registerBean(annotatedClass);
+		}
+	}
+
+	public void registerBean(Class<?> annotatedClass) {
+		registerBean(annotatedClass, null, (Class<? extends Annotation>[]) null);
+	}
+
+	public void registerBean(Class<?> annotatedClass, String name, Class<? extends Annotation>... qualifiers) {
+    //将ProviderConfiguration封装成BeanDefinition
+		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);
+		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
+			return;
+		}
+
+    //单例模式
+		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
+		abd.setScope(scopeMetadata.getScopeName());
+		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
+		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
+		if (qualifiers != null) {
+			for (Class<? extends Annotation> qualifier : qualifiers) {
+				if (Primary.class == qualifier) {
+					abd.setPrimary(true);
+				}
+				else if (Lazy.class == qualifier) {
+					abd.setLazyInit(true);
+				}
+				else {
+					abd.addQualifier(new AutowireCandidateQualifier(qualifier));
+				}
+			}
+		}
+
+		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
+		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+    //将beandefinition注册到Spring容器中
+		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
+	}
+}
+----
+
+这就完了？看起来好像没做什么事。。`ProviderConfiguration`这个配置类到这里就被当成一个bean注册到了容器中（实际是该bean对应的beandefinition），但容器的启动过程才刚刚开始。接着往下看吧。
+
+== 应用上下文的刷新过程
+
+NOTE: 本文中的**容器** 其实就是指 `AnnotationConfigApplicationContext` 这个应用上下文。
+
+在创建上下文的构造方法中，最后调用了 `refresh`方法。
+
+现在让我们看看该方法做了哪些事吧：
+
+[source,java]
+----
+	public void refresh() throws BeansException, IllegalStateException {
+		synchronized (this.startupShutdownMonitor) {
+			StartupStep contextRefresh = this.applicationStartup.start("spring.context.refresh");
+
+			// Prepare this context for refreshing.
+			prepareRefresh();
+
+			// Tell the subclass to refresh the internal bean factory.
+			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+
+			// Prepare the bean factory for use in this context.
+			prepareBeanFactory(beanFactory);
+
+			try {
+				// Allows post-processing of the bean factory in context subclasses.
+				postProcessBeanFactory(beanFactory);
+
+				StartupStep beanPostProcess = this.applicationStartup.start("spring.context.beans.post-process");
+				// Invoke factory processors registered as beans in the context.
+        //此处调用所有的BeanFactoryPostProcessors，其中包含`ConfigurationClassPostProcessor`
+				invokeBeanFactoryPostProcessors(beanFactory);
+
+				// Register bean processors that intercept bean creation.
+				registerBeanPostProcessors(beanFactory);
+				beanPostProcess.end();
+
+				// Initialize message source for this context.
+				initMessageSource();
+
+				// Initialize event multicaster for this context.
+				initApplicationEventMulticaster();
+
+				// Initialize other special beans in specific context subclasses.
+				onRefresh();
+
+				// Check for listener beans and register them.
+				registerListeners();
+
+				// Instantiate all remaining (non-lazy-init) singletons.
+				finishBeanFactoryInitialization(beanFactory);
+
+				// Last step: publish corresponding event.
+				finishRefresh();
+			}
+
+			catch (BeansException ex) {
+				if (logger.isWarnEnabled()) {
+					logger.warn("Exception encountered during context initialization - " +
+							"cancelling refresh attempt: " + ex);
+				}
+
+				// Destroy already created singletons to avoid dangling resources.
+				destroyBeans();
+
+				// Reset 'active' flag.
+				cancelRefresh(ex);
+
+				// Propagate exception to caller.
+				throw ex;
+			}
+
+			finally {
+				// Reset common introspection caches in Spring's core, since we
+				// might not ever need metadata for singleton beans anymore...
+				resetCommonCaches();
+				contextRefresh.end();
+			}
+		}
+	}
+----
+
+NOTE: 关于应用上下文刷新的详细解析网上已经有太多文章，本文不再详细介绍，只关注于与Dubbo相关的内容。
+
+**invokeBeanFactoryPostProcessors**方法的主要逻辑如下：
+
+. 先执行 `BeanDefinitionRegistryPostProcessor`实现类的 **postProcessBeanDefinitionRegistry** 方法；
+. 执行所有 `BeanFactoryPostProcessor`实现类的 **postProcessBeanFactory** 方法。
+
+此时 `ConfigurationClassPostProcessor` 类中的方法就会被执行：
+
+.ConfigurationClassPostProcessor
+[source,java]
+----
+	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
+		//...
+
+		processConfigBeanDefinitions(registry);
+	}
+
+	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
+		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
+		String[] candidateNames = registry.getBeanDefinitionNames();
+
+		//...
+
+		// Parse each @Configuration class
+		ConfigurationClassParser parser = new ConfigurationClassParser(
+				this.metadataReaderFactory, this.problemReporter, this.environment,
+				this.resourceLoader, this.componentScanBeanNameGenerator, registry);
+
+		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
+		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
+		do {
+			StartupStep processConfig = this.applicationStartup.start("spring.context.config-classes.parse");
+      //解析被@Configuration注解的类
+			parser.parse(candidates);
+			parser.validate();
+
+      //...
+
+      //从配置类中加载beantioDefinition
+			this.reader.loadBeanDefinitions(configClasses);
+
+			//...
+		}
+		while (!candidates.isEmpty());
+
+	}
+----
+
+如上面的代码逻辑，`ConfigurationClassPostProcessor` 会将解析配置类的工作交给 `ConfigurationClassParser` 处理，其逻辑如下：
+
+[source,java]
+----
+	protected final SourceClass doProcessConfigurationClass(
+			ConfigurationClass configClass, SourceClass sourceClass, Predicate<String> filter)
+			throws IOException {
+    // Process any @Import annotations
+		processImports(configClass, sourceClass, getImports(sourceClass), filter, true);
+}
+
+	private void processImports(ConfigurationClass configClass, SourceClass currentSourceClass,
+			Collection<SourceClass> importCandidates, Predicate<String> exclusionFilter,
+			boolean checkForCircularImports) {
+
+		if (importCandidates.isEmpty()) {
+			return;
+		}
+
+		if (checkForCircularImports && isChainedImportOnStack(configClass)) {
+		//...
+		}
+		else {
+			this.importStack.push(configClass);
+			try {
+        //DubboConfigConfigurationRegistrar和DubboComponentScanRegistrar
+				for (SourceClass candidate : importCandidates) {
+					if (candidate.isAssignable(ImportSelector.class)) {
+						//...
+					}
+					else if (candidate.isAssignable(ImportBeanDefinitionRegistrar.class)) {
+						// Candidate class is an ImportBeanDefinitionRegistrar ->
+						// delegate to it to register additional bean definitions
+						Class<?> candidateClass = candidate.loadClass();
+						ImportBeanDefinitionRegistrar registrar =
+								ParserStrategyUtils.instantiateClass(candidateClass, ImportBeanDefinitionRegistrar.class,
+										this.environment, this.resourceLoader, this.registry);
+						configClass.addImportBeanDefinitionRegistrar(registrar, currentSourceClass.getMetadata());
+					}
+					else {
+				     //...
+					}
+				}
+			}
+			//...
+		}
+	}
+----
+
+.ConfigurationClassBeanDefinitionReader
+[source,java]
+----
+	public void loadBeanDefinitions(Set<ConfigurationClass> configurationModel) {
+		TrackedConditionEvaluator trackedConditionEvaluator = new TrackedConditionEvaluator();
+		for (ConfigurationClass configClass : configurationModel) {
+			loadBeanDefinitionsForConfigurationClass(configClass, trackedConditionEvaluator);
+		}
+	}
+
+	private void loadBeanDefinitionsForConfigurationClass(
+			ConfigurationClass configClass, TrackedConditionEvaluator trackedConditionEvaluator) {
+    //此处加载bean方法（ProviderConfig）
+		for (BeanMethod beanMethod : configClass.getBeanMethods()) {
+			loadBeanDefinitionsForBeanMethod(beanMethod);
+		}
+
+		loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());
+		loadBeanDefinitionsFromRegistrars(configClass.getImportBeanDefinitionRegistrars());
+}
+
+	private void loadBeanDefinitionsFromRegistrars(Map<ImportBeanDefinitionRegistrar, AnnotationMetadata> registrars) {
+    //调用所有ImportBeanDefinitionRegistrar的registerBeanDefinitions方法
+		registrars.forEach((registrar, metadata) ->
+				registrar.registerBeanDefinitions(metadata, this.registry, this.importBeanNameGenerator));
+	}
+----
+
+上面方法最后通过 `registrars.forEach()`调用registerBeanDefinitions方法。
+
+如果你对上面的spring加载逻辑看得云里雾里，那也没关系，只管忘记他们就好了--只需要记住：Dubbo有两个类实现了 `ImportBeanDefinitionRegistrar` 接口，并且会被Spring容器调用！
+
+现在，让我们一窥庐山真面目！
+
+== DubboConfigConfigurationRegistrar和DubboComponentScanRegistrar
+
+=== DubboConfigConfigurationRegistrar
+
+.DubboConfigConfigurationRegistrar
+[source,java]
+----
+public class DubboConfigConfigurationRegistrar implements ImportBeanDefinitionRegistrar {
+
+    @Override
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+        // initialize dubbo beans
+        DubboSpringInitializer.initialize(registry);
+    }
+}
+----
+
+通过 `DubboSpringInitializer`的静态方法初始化Spring容器：
+
+.DubboSpringInitializer
+[source, java]
+----
+public class DubboSpringInitializer {
+
+    private static Map<BeanDefinitionRegistry, DubboSpringInitContext> contextMap = new ConcurrentHashMap<>();
+
+    public static void initialize(BeanDefinitionRegistry registry) {
+
+        // Spring ApplicationContext may not ready at this moment (e.g. load from xml), so use registry as key
+        if (contextMap.putIfAbsent(registry, new DubboSpringInitContext()) != null) {
+            return;
+        }
+
+        // prepare context and do customize
+        DubboSpringInitContext context = contextMap.get(registry);
+
+        // find beanFactory
+        ConfigurableListableBeanFactory beanFactory = findBeanFactory(registry);
+
+        // init dubbo context
+        initContext(context, registry, beanFactory);
+    }
+----
+
+调用**initContext**方法进行初始化
+
+.DubboSpringInitializer#initContext方法
+[source,java]
+----
+    private static void initContext(DubboSpringInitContext context, BeanDefinitionRegistry registry,
+                                    ConfigurableListableBeanFactory beanFactory) {
+        context.setRegistry(registry);
+        context.setBeanFactory(beanFactory);
+
+        // customize context, you can change the bind module model via DubboSpringInitCustomizer SPI
+       //扩展点，通过SPI机制加载接口 `DubboSpringInitCustomizer` 的实现类并执行。
+        customize(context);
+
+        // init ModuleModel
+        ModuleModel moduleModel = context.getModuleModel();
+        if (moduleModel == null) {
+            // init ModuleModel
+            //...
+        }
+
+        // bind dubbo initialization context to spring context
+        //将Dubbo的初始化上下文（DubboSpringInitContext，ApplicationModel，ModuleModel）绑定到Spring上下文（容器）中
+        registerContextBeans(beanFactory, context);
+
+        // mark context as bound
+        //标记Dubbo上下文为已绑定
+        context.markAsBound();
+        moduleModel.setLifeCycleManagedExternally(true);
+
+        // register common beans
+        //往Spring容器注册Dubbo的公共Bean
+        DubboBeanUtils.registerCommonBeans(registry);
+    }
+----
+
+接下来重点分析 `DubboBeanUtils.registerCommonBeans` 方法：
+
+.DubboBeanUtils.registerCommonBeans
+[source, java]
+----
+public abstract class DubboBeanUtils {
+
+    public static void registerCommonBeans(BeanDefinitionRegistry registry) {
+        //注册ReferenceAnnotationBeanPostProcessor，用于处理DubboReference/Reference注解
+        BeanRegistrar.registerInfrastructureBean(registry, "referenceAnnotationBeanPostProcessor", ReferenceAnnotationBeanPostProcessor.class);
+        //注册DubboConfigAliasPostProcessor，用于处理AbstractConfig类型的bean，将其`id`作为bean的别名注册到容器中
+        BeanRegistrar.registerInfrastructureBean(registry, "dubboConfigAliasPostProcessor", DubboConfigAliasPostProcessor.class);
+        //注册DubboApplicationListenerRegistrar，用于添加DubboBootstrapApplicationListener和DubboLifecycleComponentApplicationListener
+        BeanRegistrar.registerInfrastructureBean(registry, "dubboApplicationListenerRegister", DubboApplicationListenerRegistrar.class);
+        //注册DubboConfigDefaultPropertyValueBeanPostProcessor，用于处理AbstractConfig类型的bean，设置`id`/`name`属性的默认值为beanName，对于ProtocolConfig类型的bean则通过`setName`设置值为`dubbo`
+        BeanRegistrar.registerInfrastructureBean(registry, "dubboConfigDefaultPropertyValueBeanPostProcessor", DubboConfigDefaultPropertyValueBeanPostProcessor.class);
+        //注册DubboConfigEarlyRegistrationPostProcessor，用于注册DubboConfigEarlyInitializationPostProcessor--处理AbstractConfig类型的bean，将其加入ApplicationModel#ConfigManager中
+        Registrar.registerInfrastructureBean(registry, "dubboConfigEarlyRegistrationPostProcessor", DubboConfigEarlyRegistrationPostProcessor.class);
+    }
+}
+----
+
+
+
+=== DubboComponentScanRegistrar
+
+.DubboComponentScanRegistrar
+[source,java]
+----
+public class DubboComponentScanRegistrar implements ImportBeanDefinitionRegistrar {
+
+    @Override
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+
+        // initialize dubbo beans
+        DubboSpringInitializer.initialize(registry);
+
+        //从DubboComponentScan/EnableDubbo注解中获取需要扫描的包路径
+        Set<String> packagesToScan = getPackagesToScan(importingClassMetadata);
+
+        //注册ServiceAnnotationPostProcessor
+        registerServiceAnnotationPostProcessor(packagesToScan, registry);
+    }
+
+    /**
+     * Registers {@link ServiceAnnotationPostProcessor}
+     *
+     * @param packagesToScan packages to scan without resolving placeholders
+     * @param registry       {@link BeanDefinitionRegistry}
+     * @since 2.5.8
+     */
+    private void registerServiceAnnotationPostProcessor(Set<String> packagesToScan, BeanDefinitionRegistry registry) {
+
+        BeanDefinitionBuilder builder = rootBeanDefinition(ServiceAnnotationPostProcessor.class);
+        builder.addConstructorArgValue(packagesToScan);
+        builder.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+        AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
+        BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinition, registry);
+
+    }
+
+    private Set<String> getPackagesToScan(AnnotationMetadata metadata) {
+        // get from @DubboComponentScan
+        Set<String> packagesToScan = getPackagesToScan0(metadata, DubboComponentScan.class, "basePackages", "basePackageClasses");
+
+        // get from @EnableDubbo, compatible with spring 3.x
+        if (packagesToScan.isEmpty()) {
+            packagesToScan = getPackagesToScan0(metadata, EnableDubbo.class, "scanBasePackages", "scanBasePackageClasses");
+        }
+
+        if (packagesToScan.isEmpty()) {
+            return Collections.singleton(ClassUtils.getPackageName(metadata.getClassName()));
+        }
+        return packagesToScan;
+    }
+
+    private Set<String> getPackagesToScan0(AnnotationMetadata metadata, Class annotationClass, String basePackagesName, String basePackageClassesName) {
+
+        AnnotationAttributes attributes = AnnotationAttributes.fromMap(
+                metadata.getAnnotationAttributes(annotationClass.getName()));
+        if (attributes == null) {
+            return Collections.emptySet();
+        }
+
+        Set<String> packagesToScan = new LinkedHashSet<>();
+        // basePackages
+        String[] basePackages = attributes.getStringArray(basePackagesName);
+        packagesToScan.addAll(Arrays.asList(basePackages));
+        // basePackageClasses
+        Class<?>[] basePackageClasses = attributes.getClassArray(basePackageClassesName);
+        for (Class<?> basePackageClass : basePackageClasses) {
+            packagesToScan.add(ClassUtils.getPackageName(basePackageClass));
+        }
+        // value
+        if (attributes.containsKey("value")) {
+            String[] value = attributes.getStringArray("value");
+            packagesToScan.addAll(Arrays.asList(value));
+        }
+        return packagesToScan;
+    }
+
+}
+----
+
+该类主要用于解析注解 `DubboComponentScan` 和 `EnableDubbo` 中配置的包扫描路径，并据此创建一个ServiceAnnotationPostProcessor类型的bean。
+
+==== ServiceAnnotationPostProcessor
+
+.ServiceAnnotationPostProcessor.java
+[source, java]
+----
+public class ServiceAnnotationPostProcessor implements BeanDefinitionRegistryPostProcessor, EnvironmentAware,
+        ResourceLoaderAware, BeanClassLoaderAware, ApplicationContextAware, InitializingBean {
+    @Override
+    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+        this.registry = registry;
+        scanServiceBeans(resolvedPackagesToScan, registry);
+    }
+
+    private void scanServiceBeans(Set<String> packagesToScan, BeanDefinitionRegistry registry) {
+
+        scanned = true;
+       //...
+
+        DubboClassPathBeanDefinitionScanner scanner =
+                new DubboClassPathBeanDefinitionScanner(registry, environment, resourceLoader);
+
+        //serviceAnnotationTypes包含注解DubboService/Service（此Service是Dubbo中的注解，不是Spring中的Service）
+        for (Class<? extends Annotation> annotationType : serviceAnnotationTypes) {
+            scanner.addIncludeFilter(new AnnotationTypeFilter(annotationType));
+        }
+
+        for (String packageToScan : packagesToScan) {
+
+            // 跳过重复的包路径
+            if (servicePackagesHolder.isPackageScanned(packageToScan)) {
+                continue;
+            }
+
+            // Registers @Service Bean first
+            scanner.scan(packageToScan);
+
+            // Finds all BeanDefinitionHolders of @Service whether @ComponentScan scans or not.
+            Set<BeanDefinitionHolder> beanDefinitionHolders =
+                    findServiceBeanDefinitionHolders(scanner, packageToScan, registry, beanNameGenerator);
+
+            if (!CollectionUtils.isEmpty(beanDefinitionHolders)) {
+                    processScannedBeanDefinition(beanDefinitionHolder);
+                    servicePackagesHolder.addScannedClass(beanDefinitionHolder.getBeanDefinition().getBeanClassName());
+                }
+            } else {
+                if (logger.isWarnEnabled()) {
+                    logger.warn(CONFIG_NO_ANNOTATIONS_FOUND,"No annotations were found on the class","","No class annotated by Dubbo @Service was found under package ["
+                            + packageToScan + "], ignore re-scanned classes: " + scanExcludeFilter.getExcludedCount());
+                }
+            }
+
+            servicePackagesHolder.addScannedPackage(packageToScan);
+        }
+    }
+
+    private void processScannedBeanDefinition(BeanDefinitionHolder beanDefinitionHolder) {
+
+        Class<?> beanClass = resolveClass(beanDefinitionHolder);
+
+        Annotation service = findServiceAnnotation(beanClass);
+
+        // The attributes of @Service annotation
+        Map<String, Object> serviceAnnotationAttributes = AnnotationUtils.getAttributes(service, true);
+
+        String serviceInterface = resolveInterfaceName(serviceAnnotationAttributes, beanClass);
+
+        String annotatedServiceBeanName = beanDefinitionHolder.getBeanName();
+
+        // ServiceBean Bean name
+        String beanName = generateServiceBeanName(serviceAnnotationAttributes, serviceInterface);
+
+        AbstractBeanDefinition serviceBeanDefinition =
+                buildServiceBeanDefinition(serviceAnnotationAttributes, serviceInterface, annotatedServiceBeanName);
+
+        registerServiceBeanDefinition(beanName, serviceBeanDefinition, serviceInterface);
+
+    }
+}
+----
+
+通过processScannedBeanDefinition将扫描到的类封装成`ServiceBean`注册到容器中
+
+
+== 总结
+
+. 本文中的dubbo源码基于**3.2.0-beta.5-SNAPSHOT**版本；
